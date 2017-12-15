@@ -1,6 +1,7 @@
 package editor;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -24,5 +25,14 @@ public class TiedostonKasittelija {
 
         System.out.println("CSV " + csv + " lukeminen epäonnistui!");
         return new ArrayList<>();
+    }
+
+    public void kirjoitaUusiCsv(String tiedostoNimi, ArrayList<String> uusiCsv) {
+        try {
+            Files.write(Paths.get(tiedostoNimi), uusiCsv, StandardCharsets.UTF_8);
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("Tiedoston " + tiedostoNimi + " kirjoittaminen ei onnistunut.");
+        }
     }
 }

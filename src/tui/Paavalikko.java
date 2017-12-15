@@ -46,11 +46,15 @@ public class Paavalikko {
                 TiedonKasittelija tiedonKasittelija = new TiedonKasittelija(originaaliCsv);
 
                 tiedonKasittelija.jataViimeisetSanat(2);
+                tiedonKasittelija.jarjestaAakkosittain(2);
 
                 this.kasiteltyCsv = tiedonKasittelija.palautaCsvMuodossa();
                 for (String tieto : this.kasiteltyCsv) {
                     System.out.println(tieto);
                 }
+                System.out.print("Anna tiedostonimi: ");
+                String tiedostonimi = input.nextLine() + ".csv";
+                tiedostonKasittelija.kirjoitaUusiCsv(tiedostonimi, kasiteltyCsv);
             } else if (komento.equals("lopeta")) {
                 onKaynnissa = false;
             }

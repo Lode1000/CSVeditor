@@ -1,6 +1,9 @@
 package editor;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class TiedonKasittelija {
 
@@ -22,7 +25,7 @@ public class TiedonKasittelija {
 
     /**
      *
-     * @return Palauttaa muokatun CSV tiedoston
+     * @return Palauttaa muokatun CSV tiedoston ArrayList muodossa
      */
 
     public ArrayList<String> palautaCsvMuodossa() {
@@ -43,6 +46,27 @@ public class TiedonKasittelija {
         }
         return uusiCsv;
     }
+    /*
+    Järkyttävä, järjetön ja tehoton tapa. Väliaikainen for the job, evvk
+     */
+
+    public void jarjestaAakkosittain (int sarakkeenNumero) {
+        List<String> sarakkeenSisalto = new ArrayList<>();
+        for(String[] sarake : sarakkeet) {
+            sarakkeenSisalto.add(sarake[sarakkeenNumero]);
+        }
+        Collections.sort(sarakkeenSisalto);
+        sarakkeenSisalto = poistaDuplikaatit(sarakkeenSisalto);
+
+        for(int i = 0; i < sarakkeenSisalto.size(); i++) {
+            sarakkeet.get(i)[sarakkeenNumero] = sarakkeenSisalto.get(i);
+        }
+
+    }
+
+    public List<String> poistaDuplikaatit (List<String> lista) {
+        return lista.stream().distinct().collect(Collectors.toList());
+    }
 
     /*
     Valitsee sarakkeen ja leikkaa siitä kaiken paitsi annettavan numeron jälkeiset asiat
@@ -53,9 +77,7 @@ public class TiedonKasittelija {
 
         for(String[] sarake : sarakkeet) {
             sarake[sarakkeenNumero] = eritteleValilyonnilla(sarake[sarakkeenNumero]);
-            System.out.println(sarake[sarakkeenNumero]);
         }
-
     }
 
     /**
@@ -82,7 +104,7 @@ public class TiedonKasittelija {
     private String eritteleValilyonnilla(String eroteltava) {
         String [] erotettu = eroteltava.split(" ");
 
-        return erotettu[erotettu.length -1] + " " + erotettu[erotettu.length -2];
+        return erotettu[erotettu.length -2] + " " + erotettu[erotettu.length -1];
     }
 
 }
