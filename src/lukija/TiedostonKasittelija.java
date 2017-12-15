@@ -10,14 +10,12 @@ public class TiedostonKasittelija {
 
     private String csv;
 
-    public TiedostonKasittelija(String csv){
-        this.csv = csv;
-    }
-
     /*
     Lukee CSV CSVn, ja palauttaa ArrayListina indeksi per rivi
      */
-    public ArrayList<String> lueCSV() {
+    public ArrayList<String> lueCSV(String csv) {
+        this.csv = csv;
+
         try {
             return Files.lines(Paths.get(csv)).collect(Collectors.toCollection(ArrayList::new));
         } catch (IOException ex) {

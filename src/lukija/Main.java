@@ -10,7 +10,7 @@ package lukija;
 public class Main {
 
     public static void main(String [] args) {
-        TekstiKayttoliittyma tekstiKayttoliittyma = new TekstiKayttoliittyma();
-        tekstiKayttoliittyma.kaynnista();
+        PaaValikko paaValikko = new PaaValikko();
+        paaValikko.kaynnista();
     }
 }
