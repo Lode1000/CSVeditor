@@ -1,4 +1,4 @@
-package lukija;
+package editor;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,7 +11,7 @@ public class TiedostonKasittelija {
     private String csv;
 
     /*
-    Lukee CSV CSVn, ja palauttaa ArrayListina indeksi per rivi
+    Lukee tiedoston, ja palauttaa ArrayListina indeksi per rivi
      */
     public ArrayList<String> lueCSV(String csv) {
         this.csv = csv;

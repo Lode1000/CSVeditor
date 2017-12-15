@@ -1,24 +1,18 @@
-package lukija;
+package editor;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class TiedonKasittelija {
 
-    private final Scanner input;
+
     private ArrayList<String[]> sarakkeet;
 
-    public TiedonKasittelija(ArrayList<String> originaaliCsv, Scanner input) {
+    public TiedonKasittelija(ArrayList<String> originaaliCsv) {
         this.sarakkeet = eritteleSarakkeet(originaaliCsv);
-        this.input = input;
+
     }
 
-    public void leikkaaAlkuPois() {
-        System.out.print("Anna sarakkee numero: ");
-        int sarakkeenNumero = Integer.parseInt(input.nextLine());
-        System.out.print("Anna leikattava kohta: ");
-        int leikkaus = Integer.parseInt(input.nextLine());
-
+    public void leikkaaAlkuPois(int sarakkeenNumero, int leikkaus) {
         for(String[] sarake : sarakkeet) {
             System.out.println(sarake[sarakkeenNumero].length());
             sarake[sarakkeenNumero] = sarake[sarakkeenNumero].substring(leikkaus);
@@ -26,21 +20,42 @@ public class TiedonKasittelija {
 
     }
 
+    /**
+     *
+     * @return Palauttaa muokatun CSV tiedoston
+     */
+
+    public ArrayList<String> palautaCsvMuodossa() {
+        ArrayList<String> uusiCsv = new ArrayList<>();
+
+        for (String[] sarake: sarakkeet){
+            StringBuilder tiedot = new StringBuilder();
+            for(int i = 0; i < sarake.length; i++) {
+
+                if(i < sarake.length - 1) {
+                    tiedot.append(sarake[i]).append(",");
+                } else {
+                    tiedot.append(sarake[i]);
+                }
+
+            }
+            uusiCsv.add(tiedot.toString());
+        }
+        return uusiCsv;
+    }
+
     /*
     Valitsee sarakkeen ja leikkaa siitä kaiken paitsi annettavan numeron jälkeiset asiat
      */
-
-    public ArrayList<String> jataViimeisetSanat(int sarakkeenNumero) {
+    public void jataViimeisetSanat(int sarakkeenNumero) {
 
         ArrayList <String> nimet = new ArrayList<>();
 
         for(String[] sarake : sarakkeet) {
             sarake[sarakkeenNumero] = eritteleValilyonnilla(sarake[sarakkeenNumero]);
-            nimet.add(eritteleValilyonnilla(sarake[sarakkeenNumero]));
             System.out.println(sarake[sarakkeenNumero]);
         }
 
-        return nimet;
     }
 
     /**

@@ -1,4 +1,6 @@
-package lukija;
+package editor;
+
+import tui.Paavalikko;
 
 /**
  *
@@ -10,7 +12,7 @@ package lukija;
 public class Main {
 
     public static void main(String [] args) {
-        PaaValikko paaValikko = new PaaValikko();
-        paaValikko.kaynnista();
+        Paavalikko paavalikko = new Paavalikko();
+        paavalikko.kaynnista();
     }
 }

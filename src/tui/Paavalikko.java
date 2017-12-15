@@ -1,9 +1,12 @@
-package lukija;
+package tui;
+
+import editor.TiedonKasittelija;
+import editor.TiedostonKasittelija;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class PaaValikko {
+public class Paavalikko {
 
     private TiedostonKasittelija tiedostonKasittelija;
     private Scanner input;
@@ -19,7 +22,7 @@ public class PaaValikko {
     private String komento;
 
 
-    public PaaValikko() {
+    public Paavalikko() {
         this.input = new Scanner(System.in);
     }
 
@@ -40,8 +43,14 @@ public class PaaValikko {
             if (komento.equals("lataa")) {
                 lataaTiedosto();
             } else if (komento.equals("kasittele")) {
-                TiedonKasittelija tiedonKasittelija = new TiedonKasittelija(originaaliCsv, input);
-                ArrayList<String> nimet = tiedonKasittelija.jataViimeisetSanat(kasiteltavaSarake());
+                TiedonKasittelija tiedonKasittelija = new TiedonKasittelija(originaaliCsv);
+
+                tiedonKasittelija.jataViimeisetSanat(2);
+
+                this.kasiteltyCsv = tiedonKasittelija.palautaCsvMuodossa();
+                for (String tieto : this.kasiteltyCsv) {
+                    System.out.println(tieto);
+                }
             } else if (komento.equals("lopeta")) {
                 onKaynnissa = false;
             }
