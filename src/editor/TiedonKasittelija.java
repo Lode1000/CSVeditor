@@ -1,33 +1,36 @@
 package editor;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class TiedonKasittelija {
 
 
-    /*
-    Järkyttävä, järjetön ja tehoton tapa. Väliaikainen for the job, evvk
+    /**
+    Treenap sorttaa aakkosiin ja poistaa myös duplikaatit
+    Tehoton viritys, väliaikainen for the job, evvk
+    -> Täytyy järjestellä ylärakenteesta, jotta tieto pysyy koheesina
+     *@param sarakkeenNumero Sarake, jonka mukaan halutaan sortata
      */
 
     public void jarjestaAakkosittain (ArrayList<String[]> sarakkeet, int sarakkeenNumero) {
-        List<String> sarakkeenSisalto = new ArrayList<>();
+
+        Map<String, String[]> treeMap = new TreeMap<>();
         for(String[] sarake : sarakkeet) {
-            sarakkeenSisalto.add(sarake[sarakkeenNumero]);
+            treeMap.put(sarake[sarakkeenNumero], sarake);
         }
-        Collections.sort(sarakkeenSisalto);
 
-        // DUPLIKAATTIEN POISTAJAN täytyy poistaa ne ylärakenteesta, jotta tieto pysyy koheesina
-        sarakkeenSisalto = poistaDuplikaatit(sarakkeenSisalto);
 
-        for(int i = 0; i < sarakkeenSisalto.size(); i++) {
-            sarakkeet.get(i)[sarakkeenNumero] = sarakkeenSisalto.get(i);
+        int i = 0;
+        sarakkeet.clear();
+        for (Map.Entry<String, String[]> entry : treeMap.entrySet()) {
+            sarakkeet.add(entry.getValue());
         }
 
     }
 
+    //Tarvitaan myöhemmin, kun aakkostus on erotettu duplikaattien poistosta
+    // DUPLIKAATTIEN POISTAJAN täytyy poistaa ne ylärakenteesta, jotta tieto pysyy koheesina
     public List<String> poistaDuplikaatit (List<String> lista) {
         return lista.stream().distinct().collect(Collectors.toList());
     }
