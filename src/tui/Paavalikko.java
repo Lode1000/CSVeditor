@@ -2,6 +2,7 @@ package tui;
 
 import editor.TiedonKasittelija;
 import editor.TiedostonKasittelija;
+import editor.Tietosisalto;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -15,7 +16,7 @@ public class Paavalikko {
     private ArrayList<String> kasiteltyCsv;
 
     /*
-    Jos tekee eri toiminnallisuuksia, niin voi pistää whilen sisälle
+    Muuttujat käyttöliittymälle
      */
     private static boolean onKaynnissa;
     private String tiedostoPolku;
@@ -42,13 +43,14 @@ public class Paavalikko {
 
             if (komento.equals("lataa")) {
                 lataaTiedosto();
-            } else if (komento.equals("kasittele")) {
-                TiedonKasittelija tiedonKasittelija = new TiedonKasittelija(originaaliCsv);
+            } else if (komento.equals("kasittele")) { // KAIKKI tämän alla uuteen luokkaan
+                TiedonKasittelija tiedonKasittelija = new TiedonKasittelija();
+                Tietosisalto tietosisalto = new Tietosisalto(originaaliCsv);
 
-                tiedonKasittelija.jataViimeisetSanat(2);
-                tiedonKasittelija.jarjestaAakkosittain(2);
+                tiedonKasittelija.jataViimeisetSanat(tietosisalto.getSarakkeet(),2);
+                tiedonKasittelija.jarjestaAakkosittain(tietosisalto.getSarakkeet(),2);
 
-                this.kasiteltyCsv = tiedonKasittelija.palautaCsvMuodossa();
+                this.kasiteltyCsv = tietosisalto.palautaCsvMuodossa();
                 for (String tieto : this.kasiteltyCsv) {
                     System.out.println(tieto);
                 }
