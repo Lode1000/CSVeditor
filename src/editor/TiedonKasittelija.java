@@ -7,19 +7,53 @@ public class TiedonKasittelija {
 
 
     /**
-    Treenap sorttaa aakkosiin ja poistaa myös duplikaatit
-    Tehoton viritys, väliaikainen for the job, evvk
-    -> Täytyy järjestellä ylärakenteesta, jotta tieto pysyy koheesina
+     * Järjesttelee sarakenumeron perusteella luonnolliseen järjestykseen
      *@param sarakkeenNumero Sarake, jonka mukaan halutaan sortata
      */
 
-    public void jarjestaAakkosittain (ArrayList<String[]> sarakkeet, int sarakkeenNumero) {
+    public List<String[]> jarjestaAakkosittain (List<String[]> sarakkeet, int sarakkeenNumero, boolean nouseva) {
+
+        if(nouseva) {
+            return sarakkeet.stream()
+                    .sorted(Comparator.comparing(rivi -> rivi[sarakkeenNumero]))
+                    .collect(Collectors.toCollection(ArrayList::new));
+        } else {
+            return sarakkeet.stream()
+                    .sorted((rivi1, rivi2) -> rivi2[sarakkeenNumero].compareTo(rivi1[sarakkeenNumero]))
+                    .collect(Collectors.toCollection(ArrayList::new));
+        }
+
+/*
+        Map<String, String[]> treeMap = new TreeMap<>();
+        for(String[] sarake : sarakkeet) {
+            System.out.println(Arrays.deepToString(sarake));
+            treeMap.put(sarake[sarakkeenNumero], sarake);
+        }
+
+        int i = 0;
+        sarakkeet.clear();
+        for (Map.Entry<String, String[]> entry : treeMap.entrySet()) {
+            sarakkeet.add(entry.getValue());
+        }
+*/
+
+    }
+
+    /**
+     *
+     * Treemappina toistaiseksi
+     * Jossain vaiheessa muutos lambdaan, täytyy poistaa ne ylärakenteesta, jotta tieto pysyy koheesina
+     * Myös return pohjaiseksi, jotta käyttöliittymä on helpompi toteuttaa
+     *
+     */
+
+    public void poistaDuplikaatit (List<String[]> sarakkeet, int sarakkeenNumero) {
+        //return lista.stream().distinct().collect(Collectors.toList());
 
         Map<String, String[]> treeMap = new TreeMap<>();
         for(String[] sarake : sarakkeet) {
             treeMap.put(sarake[sarakkeenNumero], sarake);
         }
-
 
         int i = 0;
         sarakkeet.clear();
@@ -27,12 +61,6 @@ public class TiedonKasittelija {
             sarakkeet.add(entry.getValue());
         }
 
-    }
-
-    //Tarvitaan myöhemmin, kun aakkostus on erotettu duplikaattien poistosta
-    // DUPLIKAATTIEN POISTAJAN täytyy poistaa ne ylärakenteesta, jotta tieto pysyy koheesina
-    public List<String> poistaDuplikaatit (List<String> lista) {
-        return lista.stream().distinct().collect(Collectors.toList());
     }
 
     /*
@@ -48,7 +76,7 @@ public class TiedonKasittelija {
     /*
     Valitsee sarakkeen ja leikkaa siitä kaiken paitsi annettavan numeron jälkeiset asiat
      */
-    public void jataViimeisetSanat(ArrayList<String[]> sarakkeet, int sarakkeenNumero) {
+    public void jataViimeisetSanat(List<String[]> sarakkeet, int sarakkeenNumero) {
 
         ArrayList <String> nimet = new ArrayList<>();
 

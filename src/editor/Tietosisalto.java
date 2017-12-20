@@ -1,38 +1,28 @@
 package editor;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Tietosisalto {
 
 
-    private ArrayList<String[]> sarakkeet;
+    private List<String[]> sarakkeet;
 
     /**
      *
      * @param originaaliCsv OG-CSV tiedosto
      */
 
-    public Tietosisalto(ArrayList<String> originaaliCsv) {
+    public Tietosisalto(List<String> originaaliCsv) {
         eritteleSarakkeet(originaaliCsv);
     }
 
-    /**
-     *Erottelee pilkun perusteella Arrayksi, ja laittaa Arrayn listaan joka palautetaan
-     *@param originaaliCsv Alkuperäinen käsiteltävä CSV
-     */
-
-    private void eritteleSarakkeet(ArrayList<String> originaaliCsv){
-        ArrayList<String[]> sarakkeet = new ArrayList<>();
-
-        for (String rivi : originaaliCsv) {
-            sarakkeet.add(rivi.split(","));
-        }
-
-        this.sarakkeet = sarakkeet;
-    }
-
-    public ArrayList<String[]> getSarakkeet() {
+    public List<String[]> getSarakkeet() {
         return sarakkeet;
+    }
+    public void setSarakkeet(List<String[]> sarakkeet) {
+        this.sarakkeet = sarakkeet;
     }
 
     /**
@@ -58,4 +48,26 @@ public class Tietosisalto {
         }
         return uusiCsv;
     }
+
+    /**
+     *Erottelee pilkun perusteella Arrayksi, ja laittaa Arrayn listaan joka palautetaan
+     *@param originaaliCsv Alkuperäinen käsiteltävä CSV
+     */
+    private void eritteleSarakkeet(List<String> originaaliCsv){
+
+        this.sarakkeet = originaaliCsv.stream()
+                .map(sarake -> sarake.split(","))
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        /*
+        ArrayList<String[]> sarakkeet = new ArrayList<>();
+
+        for (String rivi : originaaliCsv) {
+            sarakkeet.add(rivi.split(","));
+        }
+
+        this.sarakkeet = sarakkeet;
+        */
+    }
+
 }

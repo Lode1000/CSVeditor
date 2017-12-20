@@ -5,6 +5,7 @@ import editor.TiedostonKasittelija;
 import editor.Tietosisalto;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Paavalikko {
@@ -12,8 +13,8 @@ public class Paavalikko {
     private TiedostonKasittelija tiedostonKasittelija;
     private Scanner input;
 
-    private ArrayList<String> originaaliCsv;
-    private ArrayList<String> kasiteltyCsv;
+    private List<String> originaaliCsv;
+    private List<String> kasiteltyCsv;
 
     /*
     Muuttujat käyttöliittymälle
@@ -25,6 +26,7 @@ public class Paavalikko {
 
     public Paavalikko() {
         this.input = new Scanner(System.in);
+        this.tiedostoPolku = "";
     }
 
     public void kaynnista () {
@@ -32,7 +34,7 @@ public class Paavalikko {
         this.tiedostonKasittelija = new TiedostonKasittelija();
 
         while(onKaynnissa) {
-            System.out.println("Kasiteltava tiedosto: " + this.tiedostoPolku);
+            System.out.println("Käsiteltava tiedosto: " + this.tiedostoPolku);
             System.out.print("KOMENNNOT: " +
                     "Lataa tiedosto käsiteltäväksi: 'lataa'\n" +
                     "Käsittele tiedostoa: 'kasittele'\n" +
@@ -43,12 +45,14 @@ public class Paavalikko {
 
             if (komento.equals("lataa")) {
                 lataaTiedosto();
-            } else if (komento.equals("kasittele")) { // KAIKKI tämän alla uuteen luokkaan
+            } else if (komento.equals("kasittele")) { // KAIKKI tämän alla uuteen luokkaan. Äärimmäisen väliaikainen
                 TiedonKasittelija tiedonKasittelija = new TiedonKasittelija();
                 Tietosisalto tietosisalto = new Tietosisalto(originaaliCsv);
 
                 tiedonKasittelija.jataViimeisetSanat(tietosisalto.getSarakkeet(),2);
-                tiedonKasittelija.jarjestaAakkosittain(tietosisalto.getSarakkeet(),2);
+                tietosisalto.setSarakkeet(tiedonKasittelija.jarjestaAakkosittain(tietosisalto.getSarakkeet(),2, true));
+
+                tiedonKasittelija.poistaDuplikaatit(tietosisalto.getSarakkeet(),2);
 
                 this.kasiteltyCsv = tietosisalto.palautaCsvMuodossa();
                 for (String tieto : this.kasiteltyCsv) {
@@ -80,6 +84,9 @@ public class Paavalikko {
         System.out.print("Anna tiedostopolku: ");
         this.tiedostoPolku = input.nextLine();
         this.originaaliCsv = tiedostonKasittelija.lueCSV(tiedostoPolku);
+        if(originaaliCsv.isEmpty()) {
+            this.tiedostoPolku = "";
+        }
     }
 
 }
