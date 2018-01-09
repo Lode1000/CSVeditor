@@ -1,66 +1,36 @@
 package tui;
 
-import editor.TiedonKasittelija;
-import editor.TiedostonKasittelija;
-import editor.Tietosisalto;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
-public class Paavalikko {
+public class Paavalikko implements Kayttoliittyma {
 
-    private TiedostonKasittelija tiedostonKasittelija;
     private Scanner input;
 
-    private List<String> originaaliCsv;
-    private List<String> kasiteltyCsv;
+    private boolean onKaynnissa;
 
-    /*
-    Muuttujat käyttöliittymälle
-     */
-    private static boolean onKaynnissa;
-    private String tiedostoPolku;
+    private static String tiedostoPolku;
+    private static String tiedostoNimi;
+
     private String komento;
-
 
     public Paavalikko() {
         this.input = new Scanner(System.in);
-        this.tiedostoPolku = "";
+        this.tiedostoPolku = "e:\\id";
+        this.tiedostoNimi = "asiakkaat";
     }
 
     public void kaynnista () {
         onKaynnissa = true;
-        this.tiedostonKasittelija = new TiedostonKasittelija();
 
         while(onKaynnissa) {
-            System.out.println("Käsiteltava tiedosto: " + this.tiedostoPolku);
-            System.out.print("KOMENNNOT: " +
-                    "Lataa tiedosto käsiteltäväksi: 'lataa'\n" +
-                    "Käsittele tiedostoa: 'kasittele'\n" +
-                    "Lopeta: 'lopeta'\n" +
-                    "\n> ");
-
-            this.komento = input.nextLine();
+            tulostaKomentolista();
+            this.komento = kirjoitaKomento();
 
             if (komento.equals("lataa")) {
-                lataaTiedosto();
-            } else if (komento.equals("kasittele")) { // KAIKKI tämän alla uuteen luokkaan. Äärimmäisen väliaikainen
-                TiedonKasittelija tiedonKasittelija = new TiedonKasittelija();
-                Tietosisalto tietosisalto = new Tietosisalto(originaaliCsv);
-
-                tiedonKasittelija.jataViimeisetSanat(tietosisalto.getSarakkeet(),2);
-                tietosisalto.setSarakkeet(tiedonKasittelija.jarjestaAakkosittain(tietosisalto.getSarakkeet(),2, true));
-
-                tiedonKasittelija.poistaDuplikaatit(tietosisalto.getSarakkeet(),2);
-
-                this.kasiteltyCsv = tietosisalto.palautaCsvMuodossa();
-                for (String tieto : this.kasiteltyCsv) {
-                    System.out.println(tieto);
-                }
-                System.out.print("Anna tiedostonimi: ");
-                String tiedostonimi = input.nextLine() + ".csv";
-                tiedostonKasittelija.kirjoitaUusiCsv(tiedostonimi, kasiteltyCsv);
+                valitseTiedostopolku();
+            } else if (komento.equals("kasittele")) {
+                TiedonKasittely tiedonKasittely = new TiedonKasittely(this, input);
+                tiedonKasittely.kaynnista();
             } else if (komento.equals("lopeta")) {
                 onKaynnissa = false;
             }
@@ -69,24 +39,54 @@ public class Paavalikko {
 
     }
 
-    /**
-     *
-     * @return Palauttaan käsiteltävän sarakkeen numeron
-     */
-    private int kasiteltavaSarake() {
-        // Käsiteltävän sarakkeen numero
-        System.out.print("Anna sarakkeen numero: ");
-
-        return Integer.parseInt(input.nextLine());
+    @Override
+    public void tulostaKomentolista() {
+        System.out.println("Käsiteltävän tiedoston sijainti: " + this.tiedostoPolku);
+        System.out.println("Käsiteltava tiedosto: " + this.tiedostoNimi);
+        System.out.print("KOMENNNOT: " +
+                "Lataa tiedosto käsiteltäväksi: 'lataa'\n" +
+                "Käsittele tiedostoa: 'kasittele'\n" +
+                "Lopeta: 'lopeta'");
     }
 
-    private void lataaTiedosto() {
+    private void valitseTiedostopolku() {
         System.out.print("Anna tiedostopolku: ");
         this.tiedostoPolku = input.nextLine();
-        this.originaaliCsv = tiedostonKasittelija.lueCSV(tiedostoPolku);
-        if(originaaliCsv.isEmpty()) {
-            this.tiedostoPolku = "";
-        }
+        System.out.print("Anna tiedostonimi: ");
+        this.tiedostoNimi = input.nextLine() + ".csv";
+    }
+
+    //---------------------------------------------------------------------------------------------
+    /**
+     *
+     * @return Palauttaa kirjoitetun merkkijonon
+     */
+    public String kirjoitaKomento() {
+        System.out.print("\n> ");
+
+        return input.nextLine();
+    }
+
+    /**
+     *
+     * @return palauttaa, että polun lopussa on kauttaviiva
+     */
+    public static String getTiedostoPolku() {
+        return tiedostoPolku + "\\";
+    }
+    /**
+     *
+     * @return palauttaa tiedostonimen sisältäen myös loppupäätteen
+     */
+    public static String getTiedostoNimi() {
+        return tiedostoNimi + ".csv";
+    }
+
+    public static void setTiedostoPolku(String tiedostoPolku) {
+        Paavalikko.tiedostoPolku = tiedostoPolku;
+    }
+    public static void setTiedostoNimi(String tiedostoNimi) {
+        Paavalikko.tiedostoNimi = tiedostoNimi;
     }
 
 }
