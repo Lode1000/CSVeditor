@@ -11,16 +11,17 @@ public class TiedonKasittelija {
      *@param sarakkeenNumero Sarake, jonka mukaan halutaan sortata
      */
 
-    public List<String[]> jarjestaAakkosittain (List<String[]> sarakkeet, int sarakkeenNumero, boolean nouseva) {
+    public void jarjestaAakkosittain (Tietosisalto tietosisalto, int sarakkeenNumero, boolean nouseva) {
+
 
         if(nouseva) {
-            return sarakkeet.stream()
+            tietosisalto.setSarakkeet(tietosisalto.getSarakkeet().stream()
                     .sorted(Comparator.comparing(rivi -> rivi[sarakkeenNumero]))
-                    .collect(Collectors.toCollection(ArrayList::new));
+                    .collect(Collectors.toCollection(ArrayList::new)));
         } else {
-            return sarakkeet.stream()
+            tietosisalto.setSarakkeet(tietosisalto.getSarakkeet().stream()
                     .sorted((rivi1, rivi2) -> rivi2[sarakkeenNumero].compareTo(rivi1[sarakkeenNumero]))
-                    .collect(Collectors.toCollection(ArrayList::new));
+                    .collect(Collectors.toCollection(ArrayList::new)));
         }
     }
 
@@ -60,8 +61,6 @@ public class TiedonKasittelija {
     Valitsee sarakkeen ja leikkaa siitä kaiken paitsi annettavan numeron jälkeiset asiat
      */
     public void jataViimeisetSanat(List<String[]> sarakkeet, int sarakkeenNumero, int jatettavaMaara) {
-
-        ArrayList <String> nimet = new ArrayList<>();
 
         for(String[] sarake : sarakkeet) {
             sarake[sarakkeenNumero] = eritteleValilyonnilla(sarake[sarakkeenNumero], jatettavaMaara);

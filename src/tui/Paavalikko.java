@@ -29,12 +29,11 @@ public class Paavalikko implements Kayttoliittyma {
             if (komento.equals("lataa")) {
                 valitseTiedostopolku();
             } else if (komento.equals("kasittele")) {
-                TiedonKasittely tiedonKasittely = new TiedonKasittely(this, input);
+                TiedonKasittely tiedonKasittely = new TiedonKasittely(this);
                 tiedonKasittely.kaynnista();
             } else if (komento.equals("lopeta")) {
                 onKaynnissa = false;
             }
-
         }
 
     }
@@ -46,17 +45,14 @@ public class Paavalikko implements Kayttoliittyma {
         System.out.print("KOMENNNOT: " +
                 "Lataa tiedosto käsiteltäväksi: 'lataa'\n" +
                 "Käsittele tiedostoa: 'kasittele'\n" +
-                "Lopeta: 'lopeta'");
+                "Lopeta: 'lopeta'\n");
     }
 
     private void valitseTiedostopolku() {
-        System.out.print("Anna tiedostopolku: ");
-        Paavalikko.tiedostoPolku = input.nextLine();
-        System.out.print("Anna tiedostonimi: ");
-        Paavalikko.tiedostoNimi = input.nextLine();
-        if(!tiedostoNimi.isEmpty()){
-            tiedostoNimi += ".csv";
-        }
+        System.out.println("Anna tiedostopolku: ");
+        Paavalikko.tiedostoPolku = kirjoitaKomento();
+        System.out.println("Anna tiedostonimi: ");
+        Paavalikko.tiedostoNimi = kirjoitaKomento();
     }
 
     //---------------------------------------------------------------------------------------------
@@ -65,7 +61,7 @@ public class Paavalikko implements Kayttoliittyma {
      * @return Palauttaa kirjoitetun merkkijonon
      */
     public String kirjoitaKomento() {
-        System.out.print("\n> ");
+        System.out.print("> ");
 
         return input.nextLine();
     }

@@ -10,7 +10,6 @@ import java.util.Scanner;
 public class TiedonKasittely implements Kayttoliittyma{
 
     private Paavalikko paavalikko;
-    private Scanner input;
 
     private TiedonKasittelija tiedonKasittelija;
     private Tietosisalto tietosisalto;
@@ -24,9 +23,8 @@ public class TiedonKasittely implements Kayttoliittyma{
 
     //----------------------Var end----------------------
 
-    public TiedonKasittely(Paavalikko paavalikko, Scanner input){
+    public TiedonKasittely(Paavalikko paavalikko){
         this.paavalikko = paavalikko;
-        this.input = input;
     }
 
     @Override
@@ -63,12 +61,11 @@ public class TiedonKasittely implements Kayttoliittyma{
                 onKaynnissa = false;
             } else if (komento.equals("3")) {
                 System.out.println("Valitse käsiteltävä sarake");
-                tiedonKasittelija.jarjestaAakkosittain(tietosisalto.getSarakkeet(), 2,true);
+                tiedonKasittelija.jarjestaAakkosittain(tietosisalto, 2,true);
                 //tietosisalto.setSarakkeet(tiedonKasittelija.jarjestaAakkosittain(tietosisalto.getSarakkeet(),2, true));
                 this.kasiteltyCsv = tietosisalto.palautaCsvMuodossa();
             }else if (komento.equals("4")) {
                 // tiedonKasittelija.jataViimeisetSanat(tietosisalto.getSarakkeet(),2);
-
                 this.kasiteltyCsv = tietosisalto.palautaCsvMuodossa();
             }
         }
@@ -89,8 +86,7 @@ public class TiedonKasittely implements Kayttoliittyma{
         Täytyy muokata johdonmukaisesti toimiviksi
          */
         tiedonKasittelija.jataViimeisetSanat(tietosisalto.getSarakkeet(),2, 2);
-        // tiedonKasittelija.jarjestaAakkosittain(tietosisalto.getSarakkeet(), 2,true);
-        tietosisalto.setSarakkeet(tiedonKasittelija.jarjestaAakkosittain(tietosisalto.getSarakkeet(),2, true));
+        tiedonKasittelija.jarjestaAakkosittain(tietosisalto, 2,true);
         tiedonKasittelija.poistaDuplikaatit(tietosisalto.getSarakkeet(),2);
 
         this.kasiteltyCsv = tietosisalto.palautaCsvMuodossa();

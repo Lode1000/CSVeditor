@@ -37,6 +37,7 @@ public class Tietosisalto {
         ArrayList<String> uusiCsv = new ArrayList<>();
 
         for (String[] sarake: sarakkeet){
+
             StringBuilder tiedot = new StringBuilder();
             for(int i = 0; i < sarake.length; i++) {
 
@@ -47,6 +48,7 @@ public class Tietosisalto {
                 }
 
             }
+
             uusiCsv.add(tiedot.toString());
         }
         return uusiCsv;
