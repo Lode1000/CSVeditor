@@ -44,10 +44,9 @@ public class TiedonKasittely implements Kayttoliittyma{
         this.onKaynnissa = true;
 
         this.tiedostonKasittelija = new TiedostonKasittelija();
-        lataaTiedosto();
-
-        this.tiedonKasittelija = new TiedonKasittelija();
+        lataaTiedosto();    // Lataa originaaliCsv-muuttujan seuraavaa riviä varten
         this.tietosisalto = new Tietosisalto(originaaliCsv);
+        this.tiedonKasittelija = new TiedonKasittelija();
 
         while(onKaynnissa) {
             tulostaKomentolista();
@@ -63,20 +62,23 @@ public class TiedonKasittely implements Kayttoliittyma{
             } else if (komento.equals("0")) {
                 onKaynnissa = false;
             } else if (komento.equals("3")) {
-                tietosisalto.setSarakkeet(tiedonKasittelija.jarjestaAakkosittain(tietosisalto.getSarakkeet(),2, true));
+                System.out.println("Valitse käsiteltävä sarake");
+                tiedonKasittelija.jarjestaAakkosittain(tietosisalto.getSarakkeet(), 2,true);
+                //tietosisalto.setSarakkeet(tiedonKasittelija.jarjestaAakkosittain(tietosisalto.getSarakkeet(),2, true));
                 this.kasiteltyCsv = tietosisalto.palautaCsvMuodossa();
             }else if (komento.equals("4")) {
-                tiedonKasittelija.jataViimeisetSanat(tietosisalto.getSarakkeet(),2);
+                // tiedonKasittelija.jataViimeisetSanat(tietosisalto.getSarakkeet(),2);
+
                 this.kasiteltyCsv = tietosisalto.palautaCsvMuodossa();
             }
         }
     }
 
     private void lataaTiedosto(){
-        this.originaaliCsv = tiedostonKasittelija.lueCsvTiedosto(paavalikko.getTiedostoPolku() + paavalikko.getTiedostoNimi());
+        this.originaaliCsv = tiedostonKasittelija.lueCsvTiedosto(Paavalikko.getTiedostoPolku() + Paavalikko.getTiedostoNimi());
         if(originaaliCsv.isEmpty()) {
-            paavalikko.setTiedostoPolku("");
-            paavalikko.setTiedostoNimi("");
+            Paavalikko.setTiedostoPolku("");
+            Paavalikko.setTiedostoNimi("");
             System.out.println("Tiedostoa ei ole olemassa");
             onKaynnissa = false;
         }
@@ -86,7 +88,8 @@ public class TiedonKasittely implements Kayttoliittyma{
         /*
         Täytyy muokata johdonmukaisesti toimiviksi
          */
-        tiedonKasittelija.jataViimeisetSanat(tietosisalto.getSarakkeet(),2);
+        tiedonKasittelija.jataViimeisetSanat(tietosisalto.getSarakkeet(),2, 2);
+        // tiedonKasittelija.jarjestaAakkosittain(tietosisalto.getSarakkeet(), 2,true);
         tietosisalto.setSarakkeet(tiedonKasittelija.jarjestaAakkosittain(tietosisalto.getSarakkeet(),2, true));
         tiedonKasittelija.poistaDuplikaatit(tietosisalto.getSarakkeet(),2);
 

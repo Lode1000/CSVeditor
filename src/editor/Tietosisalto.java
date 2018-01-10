@@ -27,16 +27,6 @@ public class Tietosisalto {
         this.sarakkeet = originaaliCsv.stream()
                 .map(sarake -> sarake.split(","))
                 .collect(Collectors.toCollection(ArrayList::new));
-
-        /*
-        ArrayList<String[]> sarakkeet = new ArrayList<>();
-
-        for (String rivi : originaaliCsv) {
-            sarakkeet.add(rivi.split(","));
-        }
-
-        this.sarakkeet = sarakkeet;
-        */
     }
 
     /**
@@ -50,7 +40,7 @@ public class Tietosisalto {
             StringBuilder tiedot = new StringBuilder();
             for(int i = 0; i < sarake.length; i++) {
 
-                if(i < sarake.length - 1) {
+                if(i < sarake.length - 1) { // Viimeinen sarake, joten ei pilkkua
                     tiedot.append(sarake[i]).append(",");
                 } else {
                     tiedot.append(sarake[i]);

@@ -15,8 +15,8 @@ public class Paavalikko implements Kayttoliittyma {
 
     public Paavalikko() {
         this.input = new Scanner(System.in);
-        this.tiedostoPolku = "e:\\id";
-        this.tiedostoNimi = "asiakkaat";
+        Paavalikko.tiedostoPolku = "e:\\id";
+        Paavalikko.tiedostoNimi = "";
     }
 
     public void kaynnista () {
@@ -41,8 +41,8 @@ public class Paavalikko implements Kayttoliittyma {
 
     @Override
     public void tulostaKomentolista() {
-        System.out.println("Käsiteltävän tiedoston sijainti: " + this.tiedostoPolku);
-        System.out.println("Käsiteltava tiedosto: " + this.tiedostoNimi);
+        System.out.println("Käsiteltävän tiedoston sijainti: " + Paavalikko.tiedostoPolku);
+        System.out.println("Käsiteltava tiedosto: " + Paavalikko.tiedostoNimi);
         System.out.print("KOMENNNOT: " +
                 "Lataa tiedosto käsiteltäväksi: 'lataa'\n" +
                 "Käsittele tiedostoa: 'kasittele'\n" +
@@ -51,9 +51,12 @@ public class Paavalikko implements Kayttoliittyma {
 
     private void valitseTiedostopolku() {
         System.out.print("Anna tiedostopolku: ");
-        this.tiedostoPolku = input.nextLine();
+        Paavalikko.tiedostoPolku = input.nextLine();
         System.out.print("Anna tiedostonimi: ");
-        this.tiedostoNimi = input.nextLine() + ".csv";
+        Paavalikko.tiedostoNimi = input.nextLine();
+        if(!tiedostoNimi.isEmpty()){
+            tiedostoNimi += ".csv";
+        }
     }
 
     //---------------------------------------------------------------------------------------------
