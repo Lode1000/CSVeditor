@@ -1,6 +1,4 @@
-package editor;
-
-import tui.Paavalikko;
+package tui;
 
 /**
  *
@@ -8,7 +6,6 @@ import tui.Paavalikko;
  * @version 0.02
  * @since 8u152
  * - 2017
- *
  */
 public class Main {
 

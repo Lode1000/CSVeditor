@@ -1,4 +1,4 @@
-package editor;
+package edit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,13 +13,12 @@ public class Tietosisalto {
      *
      * @param originaaliCsv OG CSV-muotoinen tiedosto
      */
-
     public Tietosisalto(List<String> originaaliCsv) {
         eritteleSarakkeet(originaaliCsv);
     }
 
     /**
-     *Erottelee pilkun perusteella Arrayksi, ja laittaa Arrayn listaan joka palautetaan
+     *Erottelee pilkun perusteella Arrayksi ja laittaa  listaan
      *@param originaaliCsv Alkuperäinen käsiteltävä CSV
      */
     private void eritteleSarakkeet(List<String> originaaliCsv){

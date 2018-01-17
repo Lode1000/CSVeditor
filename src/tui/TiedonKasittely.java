@@ -1,11 +1,10 @@
 package tui;
 
-import editor.TiedonKasittelija;
-import editor.TiedostonKasittelija;
-import editor.Tietosisalto;
+import edit.TiedonKasittelija;
+import edit.TiedostonKasittelija;
+import edit.Tietosisalto;
 
 import java.util.List;
-import java.util.Scanner;
 
 public class TiedonKasittely implements Kayttoliittyma{
 
@@ -85,7 +84,8 @@ public class TiedonKasittely implements Kayttoliittyma{
         /*
         Täytyy muokata johdonmukaisesti toimiviksi
          */
-        tiedonKasittelija.jataViimeisetSanat(tietosisalto.getSarakkeet(),2, 2);
+        tiedonKasittelija.jataMerkkienJalkeiset(tietosisalto.getSarakkeet(),2,"-");
+        // tiedonKasittelija.jataViimeisetSanat(tietosisalto.getSarakkeet(),2, 2);
         tiedonKasittelija.jarjestaAakkosittain(tietosisalto, 2,true);
         tiedonKasittelija.poistaDuplikaatit(tietosisalto.getSarakkeet(),2);
 
