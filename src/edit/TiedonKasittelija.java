@@ -12,8 +12,7 @@ public class TiedonKasittelija {
      */
 
     public void jarjestaAakkosittain (Tietosisalto tietosisalto, int sarakkeenNumero, boolean nouseva) {
-
-
+        
         if(nouseva) {
             tietosisalto.setSarakkeet(tietosisalto.getSarakkeet().stream()
                     .sorted(Comparator.comparing(rivi -> rivi[sarakkeenNumero]))
@@ -66,41 +65,39 @@ public class TiedonKasittelija {
     }
 
     private String leikkaaLoppuMerkkijononPerusteella(String eroteltava, String merkit) {
-        String [] erotettu = eroteltava.split(" ");
+        String trimmattu = eroteltava.trim();
 
-        boolean viimeinenMerkkijono = false;
-
-        // Kuinka monta sanaa otetaan palautettavaksi 'erotettu'-Arrayn lopusta
-        int koko = 0;
+        // Kuinka monta kirjainta otetaan palautettavaksi 'erotettu'-Arrayn lopusta
+        String [] erotettu = trimmattu.split(" ");
+        int lopunPituus = 0;
         for (int i = erotettu.length - 1; !erotettu[i].equals(merkit); i--) {
-            koko++;
-        }
-
-        int aloitusIndeksi = erotettu.length - koko; // Aloitusindeksi, jonka jälkeen tulevat sanat jätetään, ennen tulleet leikaten
-
-        return luoStringitaulukosta(erotettu, aloitusIndeksi,erotettu.length - 1);
-
-        /*
-        int alkio = erotettu.length - 1;
-
-        while(!viimeinenMerkkijono) {
-            if(!erotettu[alkio].equals(merkit)){
-                apu.append(erotettu[alkio]).append(" ");
-            } else{
-                viimeinenMerkkijono = true;
+            if(i != erotettu.length - 1) {
+                lopunPituus += erotettu[i].length() + 1; // +1 edustaa välilyöntejä
+            } else {
+                lopunPituus += erotettu[i].length();
             }
-            alkio--;
         }
 
-        return kaannaSanojenJarjestys(apu.toString());
-        */
-        //-------------------------------
-        /*
-        while(viimeinenMerkkijono == false){
-            eroteltava = eroteltava.substring(eroteltava.indexOf(merkit) + 1);
-            if(eroteltava.substring(eroteltava.indexOf(merkit) + 1) == )
+        int aloitusIndeksi = trimmattu.length() - lopunPituus; // Aloitusindeksi, jonka jälkeen tulevat merkit jätetään ja ennen tulleet poistetaan
+        return trimmattu.substring(aloitusIndeksi);
+    }
+
+    /**
+     *
+     * @return palauttaa parametrina annetun stringin käänteisenä
+     */
+    public String kaannaSanojenJarjestys(String sanat){
+        String [] erotettu = sanat.split(" ");
+
+        // Kääntää sanojen järjestyksen
+        for(int i = 0; i < erotettu.length / 2; i++) {
+            String apu = erotettu[i];
+
+            erotettu[i] = erotettu[erotettu.length - 1 - i];
+            erotettu[erotettu.length - 1 - i] = apu;
         }
-        */
+
+        return luoStringitaulukosta(erotettu, 0, erotettu.length - 1);
     }
 
     /**
@@ -123,20 +120,6 @@ public class TiedonKasittelija {
         return b.toString();
     }
 
-    public String kaannaSanojenJarjestys(String sanat){
-        String [] erotettu = sanat.split(" ");
-
-        // Kääntää sanojen järjestyksen
-        for(int i = 0; i < erotettu.length / 2; i++) {
-            String apu = erotettu[i];
-
-            erotettu[i] = erotettu[erotettu.length - 1 - i];
-            erotettu[erotettu.length - 1 - i] = apu;
-        }
-
-        return luoStringitaulukosta(erotettu, 0, erotettu.length - 1);
-    }
-
     /*
     Valitsee sarakkeen ja leikkaa siitä kaiken paitsi annettavan numeron jälkeiset asiat
      */
@@ -150,7 +133,7 @@ public class TiedonKasittelija {
     /**
      *Erottelee välilyönnin perusteella Arrayksi
      *@param eroteltava Stringi joka erotellaan
-     *@return kaksi viimeistä sanaa annetusta parametrista
+     *@return viimeiset sanat
      */
     private String eritteleValilyonnilla(String eroteltava, int jatettavaMaara) {
         String [] erotettu = eroteltava.split(" ");
