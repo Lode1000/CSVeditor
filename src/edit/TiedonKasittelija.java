@@ -68,9 +68,19 @@ public class TiedonKasittelija {
     private String leikkaaLoppuMerkkijononPerusteella(String eroteltava, String merkit) {
         String [] erotettu = eroteltava.split(" ");
 
-        StringBuilder apu = new StringBuilder();
-
         boolean viimeinenMerkkijono = false;
+
+        // Kuinka monta sanaa otetaan palautettavaksi 'erotettu'-Arrayn lopusta
+        int koko = 0;
+        for (int i = erotettu.length - 1; !erotettu[i].equals(merkit); i--) {
+            koko++;
+        }
+
+        int aloitusIndeksi = erotettu.length - koko; // Aloitusindeksi, jonka jälkeen tulevat sanat jätetään, ennen tulleet leikaten
+
+        return luoStringitaulukosta(erotettu, aloitusIndeksi,erotettu.length - 1);
+
+        /*
         int alkio = erotettu.length - 1;
 
         while(!viimeinenMerkkijono) {
@@ -83,6 +93,8 @@ public class TiedonKasittelija {
         }
 
         return kaannaSanojenJarjestys(apu.toString());
+        */
+        //-------------------------------
         /*
         while(viimeinenMerkkijono == false){
             eroteltava = eroteltava.substring(eroteltava.indexOf(merkit) + 1);
@@ -91,26 +103,40 @@ public class TiedonKasittelija {
         */
     }
 
-    private String kaannaSanojenJarjestys(String sanat){
-        String [] erotettu = sanat.split(" ");
-        String [] kaannetty = new String[erotettu.length];
-
-        int index = 0;
-        for(int i = erotettu.length - 1; i >= 0; i--) {
-            kaannetty[index] = erotettu[i];
-            index++;
-        }
+    /**
+     *
+     * @param taulukko Taulukko, jonka alkioista tehdään String
+     * @param alkuIndeksi Leikkaa pois tätä ennen olleet sanat
+     * @param loppuindeksi viimeinen asia
+     * @return Taulukon sisältö String muodossa
+     */
+    private String luoStringitaulukosta(String[] taulukko, int alkuIndeksi, int loppuindeksi){
 
         StringBuilder b = new StringBuilder();
-        for(int i = 0; i < erotettu.length; i++){
-            if (i != erotettu.length-1){
-                b.append(kaannetty[i]).append(" ");
+        for(int i = alkuIndeksi; i <= loppuindeksi; i++){
+            if (i != loppuindeksi){
+                b.append(taulukko[i]).append(" ");
             } else{
-                b.append(kaannetty[i]);
+                b.append(taulukko[i]);
             }
         }
         return b.toString();
     }
+
+    public String kaannaSanojenJarjestys(String sanat){
+        String [] erotettu = sanat.split(" ");
+
+        // Kääntää sanojen järjestyksen
+        for(int i = 0; i < erotettu.length / 2; i++) {
+            String apu = erotettu[i];
+
+            erotettu[i] = erotettu[erotettu.length - 1 - i];
+            erotettu[erotettu.length - 1 - i] = apu;
+        }
+
+        return luoStringitaulukosta(erotettu, 0, erotettu.length - 1);
+    }
+
     /*
     Valitsee sarakkeen ja leikkaa siitä kaiken paitsi annettavan numeron jälkeiset asiat
      */
