@@ -3,7 +3,7 @@ package tui;
 /**
  *
  * @author Lode
- * @version 0.021
+ * @version 0.022
  * @since 8u152
  * - 2017
  */

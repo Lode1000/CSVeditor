@@ -64,6 +64,12 @@ public class TiedonKasittelija {
         }
     }
 
+    /**
+     * Jättää ainoastaan annetun merkin tai merkkijonon jälkeiset sanat. Mikäli useita, niin viimeisestä merkistä alkaen.
+     * @param eroteltava Merkkijono, jonka loppu halutaan leikata
+     * @param merkit Merkki tai merkkijono, jonka jälkeen leikataan
+     * @return Leikattu merkkijono ilman alkuoosaa
+     */
     private String leikkaaLoppuMerkkijononPerusteella(String eroteltava, String merkit) {
         String trimmattu = eroteltava.trim();
 
@@ -97,17 +103,30 @@ public class TiedonKasittelija {
             erotettu[erotettu.length - 1 - i] = apu;
         }
 
-        return luoStringitaulukosta(erotettu, 0, erotettu.length - 1);
+        return luoStringTaulukosta(erotettu, 0, erotettu.length - 1);
     }
 
     /**
-     *
-     * @param taulukko Taulukko, jonka alkioista tehdään String
-     * @param alkuIndeksi Leikkaa pois tätä ennen olleet sanat
-     * @param loppuindeksi viimeinen asia
-     * @return Taulukon sisältö String muodossa
+     * Valitsee sarakkeen ja leikkaa joka riviltä kaiken paitsi annettavan numeron jälkeiset asiat
+     * @param rivit Data listassa, jossa sarakkeiden tiedot on Arrayna
+     * @param sarakkeenNumero Käsiteltävä sarake
+     * @param jatettavaMaara Jätettävien sanojen määrä
      */
-    private String luoStringitaulukosta(String[] taulukko, int alkuIndeksi, int loppuindeksi){
+    public void jataViimeisetSanat(List<String[]> rivit, int sarakkeenNumero, int jatettavaMaara) {
+
+        for(String[] sarake : rivit) {
+            String [] erotettu = sarake[sarakkeenNumero].split(" ");    // Joka kierroksella tekee splitin sarakkeen sisällölle
+            sarake[sarakkeenNumero] = luoStringTaulukosta(erotettu, erotettu.length - jatettavaMaara, erotettu.length -1);
+        }
+    }
+
+    /**
+     * @param taulukko Taulukko, jonka alkioista tehdään String välilyönnillä sanojen välissä
+     * @param alkuIndeksi Leikkaa pois tätä ennen olleet sanat ja merkit
+     * @param loppuindeksi Leikkaa tähän saakka
+     * @return Leikattu asia String muodossa
+     */
+    private String luoStringTaulukosta(String[] taulukko, int alkuIndeksi, int loppuindeksi){
 
         StringBuilder b = new StringBuilder();
         for(int i = alkuIndeksi; i <= loppuindeksi; i++){
@@ -118,37 +137,6 @@ public class TiedonKasittelija {
             }
         }
         return b.toString();
-    }
-
-    /*
-    Valitsee sarakkeen ja leikkaa siitä kaiken paitsi annettavan numeron jälkeiset asiat
-     */
-    public void jataViimeisetSanat(List<String[]> sarakkeet, int sarakkeenNumero, int jatettavaMaara) {
-
-        for(String[] sarake : sarakkeet) {
-            sarake[sarakkeenNumero] = eritteleValilyonnilla(sarake[sarakkeenNumero], jatettavaMaara);
-        }
-    }
-
-    /**
-     *Erottelee välilyönnin perusteella Arrayksi
-     *@param eroteltava Stringi joka erotellaan
-     *@return viimeiset sanat
-     */
-    private String eritteleValilyonnilla(String eroteltava, int jatettavaMaara) {
-        String [] erotettu = eroteltava.split(" ");
-
-        StringBuilder apu = new StringBuilder();
-        for(int i = jatettavaMaara; i >= 1; i--){
-            if (i != 1){
-                apu.append(erotettu[erotettu.length - i]).append(" ");
-            } else {
-                apu.append(erotettu[erotettu.length - i]);
-            }
-
-        }
-
-        return apu.toString();
     }
 
 }

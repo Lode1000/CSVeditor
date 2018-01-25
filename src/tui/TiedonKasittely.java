@@ -22,7 +22,7 @@ public class TiedonKasittely implements Kayttoliittyma{
 
     //----------------------Var end----------------------
 
-    public TiedonKasittely(Paavalikko paavalikko){
+    TiedonKasittely(Paavalikko paavalikko){
         this.paavalikko = paavalikko;
     }
 
@@ -81,9 +81,6 @@ public class TiedonKasittely implements Kayttoliittyma{
     }
 
     private void suoritaKaikkiToimenpiteet(){
-        /*
-        Täytyy muokata johdonmukaisesti toimiviksi
-         */
         tiedonKasittelija.jataMerkkienJalkeiset(tietosisalto.getSarakkeet(),2,"-");
         // tiedonKasittelija.jataViimeisetSanat(tietosisalto.getSarakkeet(),2, 2);
         tiedonKasittelija.jarjestaAakkosittain(tietosisalto, 2,true);
