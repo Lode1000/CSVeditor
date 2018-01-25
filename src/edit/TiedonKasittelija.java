@@ -25,7 +25,7 @@ public class TiedonKasittelija {
     }
 
     /**
-     * Treemappina toistaiseksi
+     * Kömpelö treemap toistaiseksi
      * Jossain vaiheessa muutos lambdaan, täytyy poistaa ne ylärakenteesta, jotta tieto pysyy koheesina
      * Myös return pohjaiseksi, jotta käyttöliittymä on helpompi toteuttaa
      */
@@ -56,21 +56,21 @@ public class TiedonKasittelija {
         }
     }
 
-
-    public void jataMerkkienJalkeiset(List<String[]> sarakkeet, int sarakkeenNumero, String merkit){
+    public void jataMerkkienJalkeiset(List<String[]> sarakkeet, int sarakkeenNumero, String merkit, boolean loppu){
 
         for(String[] sarake : sarakkeet) {
-            sarake[sarakkeenNumero] = leikkaaLoppuMerkkijononPerusteella(sarake[sarakkeenNumero], merkit);
+            sarake[sarakkeenNumero] = leikkaaMerkkijononPerusteella(sarake[sarakkeenNumero], merkit, loppu);
         }
     }
 
     /**
-     * Jättää ainoastaan annetun merkin tai merkkijonon jälkeiset sanat. Mikäli useita, niin viimeisestä merkistä alkaen.
-     * @param eroteltava Merkkijono, jonka loppu halutaan leikata
-     * @param merkit Merkki tai merkkijono, jonka jälkeen leikataan
-     * @return Leikattu merkkijono ilman alkuoosaa
+     * Jättää ainoastaan annetun merkin tai merkkijonon  ennen tai jälkeen tulevat sanat. Mikäli useita, niin viimeisestä merkistä alkaen.
+     * @param eroteltava Merkkijono, josta halutaan leikata
+     * @param merkit Merkki tai merkkijono, jonka perusteella leikataan tätä ennen tai sen jälkeinen sisältö pois
+     * @param loppu Jos true, niin jättää merkin jälkeiset, muutoin ennen merkkiä
+     * @return Leikattu merkkijono ilman alku- tai loppuosaa
      */
-    private String leikkaaLoppuMerkkijononPerusteella(String eroteltava, String merkit) {
+    private String leikkaaMerkkijononPerusteella(String eroteltava, String merkit, Boolean loppu) {
         String trimmattu = eroteltava.trim();
 
         // Kuinka monta kirjainta otetaan palautettavaksi 'erotettu'-Arrayn lopusta
@@ -84,8 +84,12 @@ public class TiedonKasittelija {
             }
         }
 
-        int aloitusIndeksi = trimmattu.length() - lopunPituus; // Aloitusindeksi, jonka jälkeen tulevat merkit jätetään ja ennen tulleet poistetaan
-        return trimmattu.substring(aloitusIndeksi);
+        int merkkiIndeksi = trimmattu.length() - lopunPituus; // Merkin indeksinumero
+        if(loppu){
+            return trimmattu.substring(merkkiIndeksi);
+        }
+
+        return trimmattu.substring(0, merkkiIndeksi);
     }
 
     /**

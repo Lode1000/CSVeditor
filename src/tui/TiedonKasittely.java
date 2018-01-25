@@ -81,7 +81,7 @@ public class TiedonKasittely implements Kayttoliittyma{
     }
 
     private void suoritaKaikkiToimenpiteet(){
-        tiedonKasittelija.jataMerkkienJalkeiset(tietosisalto.getSarakkeet(),2,"-");
+        tiedonKasittelija.jataMerkkienJalkeiset(tietosisalto.getSarakkeet(),2,"-", false);
         // tiedonKasittelija.jataViimeisetSanat(tietosisalto.getSarakkeet(),2, 2);
         tiedonKasittelija.jarjestaAakkosittain(tietosisalto, 2,true);
         tiedonKasittelija.poistaDuplikaatit(tietosisalto.getSarakkeet(),2);
@@ -94,6 +94,5 @@ public class TiedonKasittely implements Kayttoliittyma{
             System.out.println(tieto);
         }
     }
-
 
 }
